@@ -1,0 +1,33 @@
+<?php
+use Magento\OfflinePayments\Model\Banktransfer;
+
+$orderId = $this->getRequest()->getParam('order_id');
+
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$order = $objectManager->create('\Magento\Sales\Model\Order')->load($orderId );
+
+$payment = $order->getPayment();
+$method = $payment->getMethodInstance()->getCode();
+?>
+<?php if ($method == "paybox") :?>
+    <div class="admin__page-section-item-content">
+        <strong><?php echo __('Card Holder Name:') ?></strong>
+        <span class="price"><?php echo $payment->getData('paymentname'); ?></span>
+    </div>
+<div class="admin__page-section-item-content">
+    <strong><?php echo __('Credit Card Number:') ?></strong>
+    <span class="price"><?php echo $payment->getData('paymentcard'); ?></span>                        
+</div>
+    <div class="admin__page-section-item-content">
+        <strong><?php echo __('Expiry Date:') ?></strong>
+        <span class="price"><?php echo $payment->getData('paymentexp'); ?></span>
+    </div>
+    <div class="admin__page-section-item-content">
+        <strong><?php echo __('CVV Number:') ?></strong>
+        <span class="price"><?php echo $payment->getData('paymentcvv'); ?></span>
+    </div>
+    <div class="admin__page-section-item-content">
+        <strong><?php echo __('Billing Zip Code:') ?></strong>
+        <span class="price"><?php echo $payment->getData('paymentzip'); ?></span>
+    </div>
+<?php endif; ?>

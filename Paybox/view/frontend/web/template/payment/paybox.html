@@ -1,0 +1,128 @@
+<div class="payment-method" data-bind="css: {'_active': (getCode() == isChecked())}">
+    <div class="payment-method-title field choice">
+        <input type="radio"
+               name="payment[method]"
+               class="radio"
+               data-bind="attr: {'id': getCode()}, value: getCode(), checked: isChecked, click: selectPaymentMethod, visible: isRadioButtonVisible()"/>
+        <label data-bind="attr: {'for': getCode()}" class="label"><span data-bind="text: getTitle()"></span></label>
+    </div>
+    <div class="payment-method-content">
+        <div class="payment-method-billing-address">
+            <!-- ko foreach: $parent.getRegion(getBillingAddressFormName()) -->
+            <!-- ko template: getTemplate() --><!-- /ko -->
+            <!--/ko-->
+        </div>
+	    <fieldset data-bind="attr: {class: 'fieldset payment items allbank paybox', id: 'payment_form_paybox'}">
+
+            <div class="field _required">
+                <label for="paybox_paymentname" class="label">
+                    <span><!-- ko i18n: 'Card Holder Name'--><!-- /ko --></span>
+                </label>
+                <div class="control">
+                    <input data-validate="{'required-entry':true}" type="text" name="payment[paymentname]" class="input-text" value=""
+                           data-bind="attr: {
+				                    id: 'paybox_paymentname',
+				                    title: $t('Card Name'),
+				                    'data-container': 'paybox_paymentname',
+				                    'data-validate': JSON.stringify({'required':true})},
+				                    valueUpdate: 'keyup' "/>
+                </div>
+            </div>
+
+            <div class="field _required">
+                <label for="paybox_paymentcard" class="label">
+                    <span><!-- ko i18n: 'Credit Card Number'--><!-- /ko --></span>
+                </label>
+                <div class="control">
+                    <input data-validate="{'required-entry':true}" type="text" name="payment[paymentcard]" class="input-text" value=""
+                           data-bind="attr: {
+				                    id: 'paybox_paymentcard',
+				                    title: $t('Card Number'),
+				                    'data-container': 'paybox_paymentcard',
+				                    'data-validate': JSON.stringify({'required':true})},
+				                    valueUpdate: 'keyup' "/>
+                </div>
+            </div>
+
+            <div class="field _required">
+                <label for="paybox_paymentcvv" class="label">
+                    <span><!-- ko i18n: 'CVV Code'--><!-- /ko --></span>
+                </label>
+                <div class="control">
+                    <input data-validate="{'required-entry':true}" type="text" name="payment[paymentcvv]" class="input-text" value=""
+                           data-bind="attr: {
+				                    id: 'paybox_paymentcvv',
+				                    title: $t('Cvv code'),
+				                    'data-container': 'paybox_paymentcvv',
+				                    'data-validate': JSON.stringify({'required':true})},
+				                    valueUpdate: 'keyup' "/>
+                </div>
+            </div>
+
+            <div class="field _required">
+                <label for="paybox_paymentexp" class="label">
+                    <span><!-- ko i18n: 'Expiry Date'--><!-- /ko --></span>
+                </label>
+                <div class="control">
+                    <input data-validate="{'required-entry':true}" type="text" name="payment[paymentexp]" class="input-text" value=""
+                           data-bind="attr: {
+				                    id: 'paybox_paymentexp',
+				                    title: $t('Exp Date'),
+				                    'data-container': 'paybox_paymentexp',
+				                    'data-validate': JSON.stringify({'required':true})},
+				                    valueUpdate: 'keyup' "/>
+                </div>
+            </div>
+
+
+            <div class="field _required">
+			<label for="paybox_paymentzip" class="label">
+			    <span><!-- ko i18n: 'Billing Zip Code'--><!-- /ko --></span>
+			</label>
+			<div class="control">
+			    <input data-validate="{'required-entry':true}" type="text" name="payment[paymentzip]" class="input-text" value=""
+				   data-bind="attr: {
+				                    id: 'paybox_paymentzip',
+				                    title: $t('Zip code'),
+				                    'data-container': 'paybox_paymentzip',
+				                    'data-validate': JSON.stringify({'required':true})},
+				                    valueUpdate: 'keyup' "/>
+			</div>
+		    </div>
+	    </fieldset>
+		<!-- ko if: getMailingAddress() || getPayableTo() -->
+        <dl class="items check payable">
+            <!-- ko if: getPayableTo() -->
+            <dt class="title"><!-- ko i18n: 'Make Check payable toooooo:' --><!-- /ko --></dt>
+            <dd class="content"><!-- ko i18n: getPayableTo() --><!-- /ko --></dd>
+            <!-- /ko -->
+            <!-- ko if: getMailingAddress() -->
+            <dt class="title"><!-- ko i18n: 'Send Check toxyz:' --><!-- /ko --></dt>
+            <dd class="content">
+                <address class="paybox mailing address" data-bind="html: $t(getMailingAddress())"></address>
+            </dd>
+            <!-- /ko -->
+        </dl>
+        <!-- /ko -->
+        <div class="checkout-agreements-block">
+            <!-- ko foreach: $parent.getRegion('before-place-order') -->
+            <!-- ko template: getTemplate() --><!-- /ko -->
+            <!--/ko-->
+        </div>
+        <div class="actions-toolbar">
+            <div class="primary">
+                <button class="action primary checkout"
+                        type="submit"
+                        data-bind="
+                        click: placeOrder,
+                        attr: {title: $t('Place Order')},
+                        css: {disabled: !isPlaceOrderActionAllowed()},
+                        enable: (getCode() == isChecked())
+                        "
+                        disabled>
+                    <span data-bind="i18n: 'Place Order'"></span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
